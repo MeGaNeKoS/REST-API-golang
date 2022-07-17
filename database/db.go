@@ -38,3 +38,8 @@ func GetSqliteDB() *gorm.DB {
 	}
 	return sqliteDB
 }
+
+// SetSqliteDB set sqlite database, Only used in tests
+func SetSqliteDB(db *gorm.DB) {
+	sqliteDB = db
+}
