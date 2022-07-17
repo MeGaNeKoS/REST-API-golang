@@ -15,19 +15,19 @@ type Animal struct {
 
 type AnimalModel struct{}
 
-func (m *AnimalModel) DeleteAnimal(animal Animal) (err error) {
+func (m *AnimalModel) DeleteAnimal(animal Animal) (httpCode int, err error) {
 	db := database.GetSqliteDB()
 
 	result := db.Where("id = ?", animal.ID).Delete(&animal)
 	// manual check when trying to delete a non-existing animal
 	if result.RowsAffected == 0 {
-		return errors.New("No animal with id " + strconv.Itoa(animal.ID))
+		return 404, errors.New("No animal with id " + strconv.Itoa(animal.ID))
 	}
 	// any other error
 	if result.Error != nil {
-		return result.Error
+		return 400, result.Error
 	}
-	return nil
+	return 204, nil
 }
 
 func (m *AnimalModel) GetAnimalByLimit(offset, limit int) (animals []Animal, err error) {

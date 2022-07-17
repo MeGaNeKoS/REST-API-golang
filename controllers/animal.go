@@ -6,8 +6,7 @@ import (
 	"strconv"
 )
 
-type AnimalController struct {}
-
+type AnimalController struct{}
 
 func DeleteAnimal(context *gin.Context) {
 	var animal models.Animal
@@ -21,17 +20,17 @@ func DeleteAnimal(context *gin.Context) {
 	}
 
 	// delete the animal to the database
-	err = animalModel.DeleteAnimal(animal)
+	httpCode, err := animalModel.DeleteAnimal(animal)
 	if err != nil {
-		context.JSON(400, gin.H{"status": "error", "message": err})
+		context.JSON(httpCode, gin.H{"status": "error", "message": err})
 		context.Abort()
 		return
 	}
 
-	context.JSON(204, gin.H{})
+	context.JSON(httpCode, gin.H{})
 }
 
-func GetAnimalById(context *gin.Context){
+func GetAnimalById(context *gin.Context) {
 
 	animalID := context.Param("id")
 	// convert id to int. if error, return error
@@ -58,7 +57,7 @@ func GetAnimalById(context *gin.Context){
 }
 
 // GetAnimal is for getting list of all animal in database
-func GetAnimal(context *gin.Context){
+func GetAnimal(context *gin.Context) {
 	var err error
 
 	page := context.Query("page")
@@ -113,7 +112,7 @@ func InputAnimal(context *gin.Context) {
 	context.JSON(200, gin.H{"status": "success", "data": animal})
 }
 
-func UpdateAnimal(context *gin.Context)  {
+func UpdateAnimal(context *gin.Context) {
 	var animal models.Animal
 	var err error
 
